@@ -3,96 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trader Vogue | Risk Calculator</title>
+  <title>Trader Vogue - Risk Calculator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0f0f0f;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #111;
       color: #fff;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
+    }
+    header {
+      text-align: center;
       padding: 20px;
     }
-    h1 {
-      color: #39ff14;
-      margin-bottom: 30px;
+    header img {
+      width: 150px;
+      height: auto;
+      display: block;
+      margin: 0 auto 10px auto;
     }
-    .calculator {
-      background: #1f1f1f;
-      padding: 20px;
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #f39c12;
+    }
+    main {
+      background-color: #222;
+      padding: 30px;
       border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
       max-width: 400px;
       width: 100%;
-      box-shadow: 0 0 20px #39ff14;
     }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input {
+    input, button {
       width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      background: #2a2a2a;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
       border: none;
-      color: white;
-      border-radius: 5px;
     }
     button {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-      background-color: #39ff14;
-      color: black;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
+      background-color: #27ae60;
+      color: white;
       cursor: pointer;
     }
-    .result {
-      margin-top: 20px;
-      padding: 10px;
-      background: #282828;
-      border-radius: 8px;
+    button:hover {
+      background-color: #2ecc71;
+    }
+    #result {
+      font-size: 18px;
+      color: #0f0;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
-  <h1>Trader Vogue - Risk Calculator</h1>
-  <div class="calculator">
-    <label for="capital">Account Capital ($):</label>
-    <input type="number" id="capital" placeholder="e.g. 1000" />
-
-    <label for="risk">Risk per Trade (%):</label>
-    <input type="number" id="risk" placeholder="e.g. 1" />
-
-    <label for="sl">Stop Loss (pips or points):</label>
-    <input type="number" id="sl" placeholder="e.g. 30" />
-
-    <button onclick="calculateRisk()">Calculate Lot Size</button>
-
-    <div class="result" id="result"></div>
-  </div>
-
+  <header>
+    <img src="logo.png" alt="Trader Vogue Logo">
+    <h1>Trader Vogue - Risk Calculator</h1>
+  </header>
+  <main>
+    <input type="number" id="balance" placeholder="Account Balance ($)" />
+    <input type="number" id="risk" placeholder="Risk % (e.g. 2)" />
+    <input type="number" id="sl" placeholder="Stop Loss (pips)" />
+    <button onclick="calculateRisk()">Calculate</button>
+    <div id="result"></div>
+  </main>
   <script>
     function calculateRisk() {
-      const capital = parseFloat(document.getElementById('capital').value);
-      const riskPercent = parseFloat(document.getElementById('risk').value);
-      const stopLoss = parseFloat(document.getElementById('sl').value);
+      const balance = parseFloat(document.getElementById('balance').value);
+      const risk = parseFloat(document.getElementById('risk').value);
+      const sl = parseFloat(document.getElementById('sl').value);
 
-      if (isNaN(capital) || isNaN(riskPercent) || isNaN(stopLoss)) {
-        document.getElementById('result').innerText = "Please fill all fields correctly.";
+      if (!balance || !risk || !sl || sl === 0) {
+        document.getElementById('result').innerText = 'Please enter valid values.';
         return;
       }
 
-      const riskAmount = (capital * riskPercent) / 100;
-      const lotSize = riskAmount / stopLoss;
+      const riskAmount = (balance * risk) / 100;
+      const lotSize = riskAmount / sl;
 
-      document.getElementById('result').innerHTML = `
-        Risk Amount: <strong>$${riskAmount.toFixed(2)}</strong><br/>
-        Suggested Lot Size: <strong>${lotSize.toFixed(2)} lots</strong>
-      `;
+      document.getElementById('result').innerText = `Lot Size: ${lotSize.toFixed(2)} (Risk $${riskAmount.toFixed(2)})`;
     }
   </script>
 </body>
